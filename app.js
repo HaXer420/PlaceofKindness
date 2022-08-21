@@ -20,7 +20,7 @@ app.use((req, res, next) => {
 });
 
 app.use('/', itemRouter);
-app.use('/api/v1/needyusers', userRouter);
+app.use('/api/v1/users', userRouter);
 app.use('/api/v1/items', itemRouter);
 app.use('/api/v1/comments', commentRouter);
 app.use('/api/v1/posts', postRouter);
