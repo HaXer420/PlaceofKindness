@@ -78,6 +78,7 @@ exports.signup = catchAsync(async (req, res, next) => {
     passwordConfirm: req.body.passwordConfirm,
     passwordChangedAt: req.body.passwordChangedAt,
     temprole: req.body.role,
+    cnic: Math.random(13),
   });
 
   req.token = signInNewUser(newUser._id, 201, res);

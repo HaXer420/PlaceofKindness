@@ -34,6 +34,7 @@ exports.updateOne = (Model) =>
 
 exports.createOne = (Model) =>
   catchAsync(async (req, res, next) => {
+    // console.log(req.body);
     const doc = await Model.create(req.body);
 
     res.status(201).json({
@@ -72,6 +73,7 @@ exports.getAll = (Model) =>
   catchAsync(async (req, res) => {
     let filter = {};
     if (req.params.itemid) filter = { item: req.params.itemid };
+    if (req.params.postid) filter = { post: req.params.postid };
 
     const features = new APIFeatures(Model.find(filter), req.query)
       .filter()

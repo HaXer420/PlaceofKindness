@@ -26,6 +26,7 @@ router
 
 router.delete('/deleteMe', authController.protect, userController.deleteMe);
 
+/////////////////////////////////////////////////////////////////
 //admin
 router.get(
   '/',
