@@ -45,7 +45,8 @@ const signinUser = (user, statuscode, res) => {
     status: 'success',
     token,
     data: {
-      user,
+      user: user.id,
+      role: user.role,
     },
   });
 };
@@ -173,7 +174,7 @@ exports.login = catchAsync(async (req, res, next) => {
     return next(new AppError('Account or password is not correct', 401));
   }
 
-  signinUser(user1._id, 201, res);
+  signinUser(user1, 201, res);
 
   // const token = signInToken(user._id);
   // res.status(201).json({

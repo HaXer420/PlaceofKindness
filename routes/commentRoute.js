@@ -15,9 +15,6 @@ router
 
 router.route('/').get(commentController.getAllComments);
 
-/////////////////////////
-//admin routes
-
 router
   .route('/:id')
   .get(
@@ -30,10 +27,6 @@ router
     authController.restrictTo('admin'),
     commentController.updateComment
   )
-  .delete(
-    authController.protect,
-    authController.restrictTo('admin'),
-    commentController.deleteComment
-  );
+  .delete(authController.protect, commentController.deleteComment);
 
 module.exports = router;

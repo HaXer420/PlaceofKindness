@@ -3,70 +3,87 @@ const mongoose = require('mongoose');
 const validator = require('validator');
 const bcrypt = require('bcrypt');
 
-const userSchema = mongoose.Schema({
-  name: {
-    type: String,
-    minlength: [3, 'must have greater or equal to 3 length'],
-    maxlength: [50, 'must have less or equal to 50 length'],
-    required: [true, 'Must have a name'],
-  },
-  email: {
-    type: String,
-    required: [true, 'Must have a email'],
-    unique: [true, 'Email must not be used before'],
-    lowercase: true,
-    validate: [validator.isEmail, 'Enter valid email'],
-  },
-  username: {
-    type: String,
-    required: [true, 'must have a username'],
-    unique: [true, 'username must be unique'],
-  },
-  cnic: {
-    type: Number,
-    unique: true,
-    minlength: [13, 'must be equal to 13 length'],
-    maxlength: [13, 'must be equal to 13 length'],
-  },
-  photo: {
-    type: String,
-    default: 'default.jpg',
-  },
-  password: {
-    type: String,
-    required: [true, 'Must have a password'],
-    minlength: [8, 'must have >8 length'],
-    select: false,
-  },
-  passwordConfirm: {
-    type: String,
-    required: [true, 'Must have a confirm password'],
-    validate: {
-      validator: function (el) {
-        return el === this.password;
-      },
-      message: 'Passwords are not same',
+const userSchema = mongoose.Schema(
+  {
+    name: {
+      type: String,
+      minlength: [3, 'must have greater or equal to 3 length'],
+      maxlength: [50, 'must have less or equal to 50 length'],
+      required: [true, 'Must have a name'],
     },
+    email: {
+      type: String,
+      required: [true, 'Must have a email'],
+      unique: [true, 'Email must not be used before'],
+      lowercase: true,
+      validate: [validator.isEmail, 'Enter valid email'],
+    },
+    username: {
+      type: String,
+      required: [true, 'must have a username'],
+      unique: [true, 'username must be unique'],
+    },
+    cnic: {
+      type: Number,
+      unique: true,
+      minlength: [13, 'must be equal to 13 length'],
+      maxlength: [13, 'must be equal to 13 length'],
+    },
+    photo: {
+      type: String,
+      default: 'default.jpg',
+    },
+    password: {
+      type: String,
+      required: [true, 'Must have a password'],
+      minlength: [8, 'must have >8 length'],
+      select: false,
+    },
+    passwordConfirm: {
+      type: String,
+      required: [true, 'Must have a confirm password'],
+      validate: {
+        validator: function (el) {
+          return el === this.password;
+        },
+        message: 'Passwords are not same',
+      },
+    },
+    passwordChangedAt: {
+      type: Date,
+    },
+    role: {
+      type: String,
+      enum: ['admin', 'donator', 'needy', 'unverified'],
+      default: 'unverified',
+    },
+    temprole: {
+      type: String,
+      default: 'donator',
+    },
+    passResetToken: String,
+    passTokenExpire: Date,
+    active: {
+      type: Boolean,
+      default: true,
+    },
+    confirmEmailToken: String,
   },
-  passwordChangedAt: {
-    type: Date,
-  },
-  role: {
-    type: String,
-    enum: ['admin', 'donator', 'needy', 'unverified'],
-    default: 'unverified',
-  },
-  temprole: {
-    type: String,
-    default: 'donator',
-  },
-  passResetToken: String,
-  passTokenExpire: Date,
-  active: {
-    type: Boolean,
-    default: true,
-  },
-  confirmEmailToken: String,
+  {
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true },
+  }
+);
+userSchema.virtual('posts', {
+  ref: 'Post',
+  foreignField: 'user',
+  localField: '_id',
+});
+
+userSchema.virtual('items', {
+  ref: 'Item',
+  foreignField: 'user',
+  localField: '_id',
 });
 
 userSchema.pre('save', async function (next) {

@@ -1,3 +1,4 @@
+const cors = require('cors');
 const express = require('express');
 const dotenv = require('dotenv');
 
@@ -12,6 +13,10 @@ dotenv.config({ path: './config.env' });
 
 const app = express();
 
+app.use(cors());
+
+app.options('*', cors());
+
 app.use(express.json());
 
 app.use((req, res, next) => {
@@ -19,7 +24,7 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use('/', itemRouter);
+app.use('/', postRouter);
 app.use('/api/v1/users', userRouter);
 app.use('/api/v1/items', itemRouter);
 app.use('/api/v1/comments', commentRouter);

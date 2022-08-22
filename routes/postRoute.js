@@ -17,6 +17,10 @@ router
     postController.createPost
   );
 
+// router
+//   .route('/deletepost/:id')
+//   .delete(authController.protect, postController.postDel);
+
 // router.route('/:id').get(postController.getPost);
 
 router
@@ -27,10 +31,6 @@ router
     authController.restrictTo('admin'),
     postController.updatePost
   )
-  .delete(
-    authController.protect,
-    authController.restrictTo('admin'),
-    postController.deletePost
-  );
+  .delete(authController.protect, postController.deletePost);
 
 module.exports = router;

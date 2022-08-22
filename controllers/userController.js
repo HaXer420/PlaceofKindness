@@ -19,7 +19,7 @@ exports.getMe = (req, res, next) => {
   next();
 };
 
-exports.getUser = factory.getOne(User);
+exports.getUser = factory.getOne(User, { path: 'posts' }, { path: 'items' });
 exports.getAllUsers = factory.getAll(User);
 exports.updateUser = factory.updateOne(User);
 exports.deleteUser = factory.deleteOne(User);
