@@ -404,7 +404,7 @@ exports.emailConfirm = catchAsync(async (req, res, next) => {
   await user.save({ validateBeforeSave: false });
   // send token along with updated info
 
-  signinUser(user._id, 201, res);
+  signinUser(user, 201, res);
 
   // const token = signInToken(user._id);
   // res.status(201).json({

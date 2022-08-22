@@ -13,7 +13,8 @@ const itemSchema = mongoose.Schema(
     },
     category: {
       type: String,
-      enum: ['Clothing', 'Shoes'],
+      enum: ['Clothing', 'Shoes', 'Electronics', 'House Items', 'others'],
+      default: 'Item',
     },
     createdAt: {
       type: Date,
