@@ -27,10 +27,9 @@ const signinUser = (user, statuscode, res) => {
   // });
 
   const cookieOptions = {
-    expires: '3 days',
-    // expires: new Date(
-    //   Date.now() + process.env.EXPIRES_COOKIE_IN * 24 * 60 * 60 * 1000
-    // ),
+    expires: new Date(
+      Date.now() + process.env.EXPIRES_COOKIE_IN * 24 * 60 * 60 * 1000
+    ),
 
     httpOnly: true,
   };
