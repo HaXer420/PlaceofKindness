@@ -30,7 +30,7 @@ const commentSchema = new mongoose.Schema(
     toObject: { virtuals: true },
   }
 );
-// commentSchema.index({ tour: 1, user: 1 });
+// commentSchema.index({ post: 1, user: 1 });
 
 commentSchema.pre(/^find/, function (next) {
   this.populate({

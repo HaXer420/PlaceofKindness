@@ -6,6 +6,7 @@ const userRouter = require('./routes/userRoute');
 const itemRouter = require('./routes/itemRoute');
 const commentRouter = require('./routes/commentRoute');
 const postRouter = require('./routes/postRoute');
+const donationRouter = require('./routes/donationRoute');
 const AppError = require('./utils/appError');
 const globalErrorHandler = require('./controllers/errorController');
 
@@ -29,6 +30,7 @@ app.use('/api/v1/users', userRouter);
 app.use('/api/v1/items', itemRouter);
 app.use('/api/v1/comments', commentRouter);
 app.use('/api/v1/posts', postRouter);
+app.use('/api/v1/donations', donationRouter);
 
 app.all('*', (req, res, next) => {
   next(new AppError(`Couldn't fint the ${req.originalUrl} url`, 404));

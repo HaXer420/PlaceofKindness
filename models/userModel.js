@@ -59,7 +59,9 @@ const userSchema = mongoose.Schema(
     },
     temprole: {
       type: String,
-      default: 'donator',
+    },
+    donated: {
+      type: Number,
     },
     passResetToken: String,
     passTokenExpire: Date,
