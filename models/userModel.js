@@ -60,8 +60,13 @@ const userSchema = mongoose.Schema(
     temprole: {
       type: String,
     },
+    requestlimit: {
+      type: Number,
+      default: 2,
+    },
     donated: {
       type: Number,
+      default: 0,
     },
     passResetToken: String,
     passTokenExpire: Date,
