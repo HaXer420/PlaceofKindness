@@ -4,6 +4,8 @@ const authController = require('../controllers/authController');
 
 const router = express.Router();
 
+router.route('/needyusers').get(userController.needyUsers);
+
 router
   .route('/signup')
   .post(authController.signup, authController.sendEmailConfirm);

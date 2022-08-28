@@ -19,6 +19,19 @@ exports.getMe = (req, res, next) => {
   next();
 };
 
+exports.needyUsers = catchAsync(async (req, res, next) => {
+  const user = await User.find({ role: 'needy' }).select(
+    '-__v -passwordChangedAt -active -donated'
+  );
+  res.status(200).json({
+    status: 'success',
+    result: user.length,
+    data: {
+      body: user,
+    },
+  });
+});
+
 exports.getUser = factory.getOne(User, { path: 'posts' }, { path: 'items' });
 exports.getAllUsers = factory.getAll(User);
 exports.updateUser = factory.updateOne(User);
