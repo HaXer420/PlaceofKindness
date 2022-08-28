@@ -14,4 +14,18 @@ router
     requestController.createRequest
   );
 
+router
+  .route('/:id')
+  .get(authController.protect, requestController.OneRequest)
+  .patch(
+    authController.protect,
+    authController.restrictTo('needy'),
+    requestController.updateRequest
+  )
+  .delete(
+    authController.protect,
+    authController.restrictTo('admin'),
+    requestController.deleteRequest
+  );
+
 module.exports = router;

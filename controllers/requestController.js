@@ -32,3 +32,6 @@ exports.createRequest = catchAsync(async (req, res, next) => {
 });
 
 exports.getAllRequests = factory.getAll(Request);
+exports.updateRequest = factory.updateOne(Request);
+exports.OneRequest = factory.getOne(Request);
+exports.deleteRequest = factory.deleteOne(Request);
