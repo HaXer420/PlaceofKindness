@@ -4,6 +4,39 @@ const catchAsync = require('../utils/catchAsync');
 const factory = require('./factoryHandler');
 
 // exports.getAllUsers = (req, res, next) => {};
+const currentObj = (obj, ...fieldsallowed) => {
+  const newObj = {};
+  Object.keys(obj).forEach((el) => {
+    if (fieldsallowed.includes(el)) newObj[el] = obj[el];
+  });
+
+  return newObj;
+};
+
+exports.updateMe = catchAsync(async (req, res, next) => {
+  if (req.body.password || req.body.passwordConfirm) {
+    return next(
+      new AppError(
+        'This route is not for password update please use update password route for that!',
+        400
+      )
+    );
+  }
+
+  const filterObject = currentObj(req.body, 'name', 'email');
+
+  const updatedUser = await User.findByIdAndUpdate(req.user.id, filterObject, {
+    new: true,
+    runValidators: true,
+  });
+
+  res.status(200).json({
+    status: 'success',
+    data: {
+      user: updatedUser,
+    },
+  });
+});
 
 exports.deleteMe = catchAsync(async (req, res, next) => {
   const userD = await User.findByIdAndUpdate(req.user.id, { active: false });
