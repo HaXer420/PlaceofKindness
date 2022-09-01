@@ -33,6 +33,9 @@ const userSchema = mongoose.Schema(
       type: String,
       default: 'default.jpg',
     },
+    cloudinary_id: {
+      type: String,
+    },
     password: {
       type: String,
       required: [true, 'Must have a password'],

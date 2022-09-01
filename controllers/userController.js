@@ -2,6 +2,9 @@ const User = require('../models/userModel');
 const AppError = require('../utils/appError');
 const catchAsync = require('../utils/catchAsync');
 const factory = require('./factoryHandler');
+const cloudinary = require('../utils/cloudinary');
+
+// multer
 
 // exports.getAllUsers = (req, res, next) => {};
 const currentObj = (obj, ...fieldsallowed) => {
@@ -24,6 +27,8 @@ exports.updateMe = catchAsync(async (req, res, next) => {
   }
 
   const filterObject = currentObj(req.body, 'name', 'email');
+
+  if (req.file) filterObject.photo = req.file.filename;
 
   const updatedUser = await User.findByIdAndUpdate(req.user.id, filterObject, {
     new: true,

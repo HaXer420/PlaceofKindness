@@ -1,6 +1,7 @@
 const express = require('express');
 const userController = require('../controllers/userController');
 const authController = require('../controllers/authController');
+const multer = require('../utils/multer');
 
 const router = express.Router();
 
@@ -22,7 +23,13 @@ router
   .route('/updatepassword')
   .patch(authController.protect, authController.updatePass);
 
-router.patch('/updateMe', authController.protect, userController.updateMe);
+router.patch(
+  '/updateMe',
+  authController.protect,
+  multer.uploadUserImg,
+  multer.UserImgResize,
+  userController.updateMe
+);
 
 router
   .route('/getme')
