@@ -5,10 +5,10 @@ const catchAsync = require('../utils/catchAsync');
 cron.schedule(
   '10 10 10 * * 1',
   catchAsync(async () => {
-    console.log('running every monday 10th hr and 10th minute and 10th second');
+    console.log('running every monday 10th hr,10th minute and 10th second');
 
     const user = await User.updateMany(
-      { requestlimit: { $eq: 0 } },
+      { requestlimit: { $lt: 2 } },
       { requestlimit: 2 }
     );
   })

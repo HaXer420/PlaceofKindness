@@ -65,7 +65,47 @@ exports.needyUsers = catchAsync(async (req, res, next) => {
   });
 });
 
-exports.getUser = factory.getOne(User, { path: 'posts' }, { path: 'items' });
+const getOneUser = (Model, popOpt, popOpt2, popOpt3) =>
+  catchAsync(async (req, res, next) => {
+    let query = Model.findById(req.params.id);
+
+    if (popOpt) {
+      query = query.populate(popOpt);
+    }
+
+    if (popOpt2) {
+      query = query.populate(popOpt2);
+    }
+
+    if (popOpt3) {
+      query = query.populate(popOpt3);
+    }
+
+    const doc = await query;
+    // const doc = await Model.findById(req.params.id).populate('reviews');
+
+    if (!doc) {
+      // return res.status(404).json('id not found');
+      return next(new AppError('No doc found with such id'));
+    }
+
+    res.status(200).json({
+      status: 'success',
+      posts: doc.posts.length,
+      items: doc.items.length,
+      requests: doc.requests.length,
+      data: {
+        data: doc,
+      },
+    });
+  });
+
+exports.getUser = getOneUser(
+  User,
+  { path: 'posts' },
+  { path: 'items' },
+  { path: 'requests' }
+);
 exports.getAllUsers = factory.getAll(User);
 exports.updateUser = factory.updateOne(User);
 exports.deleteUser = factory.deleteOne(User);

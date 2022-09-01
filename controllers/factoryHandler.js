@@ -45,7 +45,7 @@ exports.createOne = (Model) =>
     });
   });
 
-exports.getOne = (Model, popOpt, popOpt2) =>
+exports.getOne = (Model, popOpt, popOpt2, popOpt3) =>
   catchAsync(async (req, res, next) => {
     let query = Model.findById(req.params.id);
 
@@ -55,6 +55,10 @@ exports.getOne = (Model, popOpt, popOpt2) =>
 
     if (popOpt2) {
       query = query.populate(popOpt2);
+    }
+
+    if (popOpt3) {
+      query = query.populate(popOpt3);
     }
 
     const doc = await query;

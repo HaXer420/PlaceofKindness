@@ -71,6 +71,12 @@ const signInNewUser = (user, statuscode, res) => {
 };
 
 exports.signup = catchAsync(async (req, res, next) => {
+  if (req.body.cnic) {
+    return next(
+      new AppError('Donator Does not need CNIC plese remove it', 400)
+    );
+  }
+
   const newUser = await User.create({
     name: req.body.name,
     email: req.body.email,

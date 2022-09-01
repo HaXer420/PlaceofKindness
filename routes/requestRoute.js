@@ -19,7 +19,7 @@ router
   .get(authController.protect, requestController.OneRequest)
   .patch(
     authController.protect,
-    authController.restrictTo('needy'),
+    authController.restrictTo('needy', 'admin'),
     requestController.updateRequest
   )
   .delete(
