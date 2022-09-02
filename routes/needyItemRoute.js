@@ -17,6 +17,13 @@ router
     getItemController.createGetItem
   );
 
+router.get(
+  '/unshipped',
+  authController.protect,
+  authController.restrictTo('admin'),
+  getItemController.unsentItems
+);
+
 router
   .route('/allpurchasing')
   .get(

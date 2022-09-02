@@ -30,3 +30,16 @@ exports.getAllPurchase = factory.getAll(getItem);
 exports.getPurchase = factory.getOne(getItem);
 exports.deletePurchase = factory.deleteOne(getItem);
 exports.updatePurchase = factory.updateOne(getItem);
+
+exports.unsentItems = catchAsync(async (req, res, next) => {
+  const purchase = await getItem.aggregate([
+    {
+      $match: { shipped: false },
+    },
+  ]);
+  res.status(201).json({
+    status: 'success',
+    total: purchase.length,
+    data: purchase,
+  });
+});

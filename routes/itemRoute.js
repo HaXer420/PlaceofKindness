@@ -1,13 +1,20 @@
 const express = require('express');
 const itemController = require('../controllers/itemController');
 const authController = require('../controllers/authController');
-const getItemRouter = require('../routes/needyItemRoute');
+const getItemRouter = require('./needyItemRoute');
 
 const router = express.Router();
 
 router.use('/:itemid/needyitem', getItemRouter);
 
 router.route('/').get(itemController.getAllItem);
+
+router.get(
+  '/unavailableitems',
+  authController.protect,
+  authController.restrictTo('admin'),
+  itemController.unavailableItems
+);
 
 router
   .route('/createItem')

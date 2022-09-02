@@ -12,3 +12,17 @@ exports.getAllItem = factory.getAll(Item);
 exports.getItem = factory.getOne(Item);
 exports.deleteItem = factory.deleteOne(Item);
 exports.updateItem = factory.updateOne(Item);
+
+exports.unavailableItems = catchAsync(async (req, res, next) => {
+  const item = await Item.aggregate([
+    {
+      $match: { available: false },
+    },
+  ]);
+
+  res.status(201).json({
+    status: 'success',
+    total: item.length,
+    data: item,
+  });
+});
