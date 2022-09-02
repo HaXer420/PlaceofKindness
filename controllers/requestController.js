@@ -17,9 +17,7 @@ exports.createRequest = catchAsync(async (req, res, next) => {
     res.status(200).json({
       status: 'success',
       messge: 'request Created',
-      data: {
-        request,
-      },
+      data: request,
     });
   } else {
     next(

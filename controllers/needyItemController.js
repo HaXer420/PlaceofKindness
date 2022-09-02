@@ -21,9 +21,7 @@ exports.createGetItem = catchAsync(async (req, res, next) => {
     res.status(201).json({
       status: 'success',
       message: 'Item will be sent to your given address shortly',
-      data: {
-        doc,
-      },
+      data: doc,
     });
   }
 });
