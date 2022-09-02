@@ -38,7 +38,7 @@ exports.updateMe = catchAsync(async (req, res, next) => {
   res.status(200).json({
     status: 'success',
     data: {
-      user: updatedUser,
+      updatedUser,
     },
   });
 });
@@ -65,7 +65,7 @@ exports.needyUsers = catchAsync(async (req, res, next) => {
     status: 'success',
     result: user.length,
     data: {
-      body: user,
+      user,
     },
   });
 });
@@ -100,7 +100,7 @@ const getOneUser = (Model, popOpt, popOpt2, popOpt3) =>
       items: doc.items.length,
       requests: doc.requests.length,
       data: {
-        data: doc,
+        doc,
       },
     });
   });

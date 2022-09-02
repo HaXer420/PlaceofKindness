@@ -128,7 +128,7 @@ exports.signupneedy = catchAsync(async (req, res, next) => {
 
   req.user = newUser;
 
-  const message = `Hello ${newUser.name} In order to get verified for the Needy Account you need to contact us at: 03001234567 or your can mail us at: placeofkindness@poc.com`;
+  const message = `Hello ${newUser.name} In order to get verified for the Needy Account you need to contact us at: 03001234567 or you can mail us at: placeofkindness@poc.com`;
 
   await sendEmail({
     email: newUser.email,
