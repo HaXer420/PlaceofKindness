@@ -39,7 +39,7 @@ commentSchema.pre(/^find/, function (next) {
   });
   this.populate({
     path: 'post',
-    select: 'name',
+    select: 'title -user',
   });
   next();
 });
