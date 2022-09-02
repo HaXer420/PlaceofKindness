@@ -108,3 +108,17 @@ exports.getUser = getOneUser(
 exports.getAllUsers = factory.getAll(User);
 exports.updateUser = factory.updateOne(User);
 exports.deleteUser = factory.deleteOne(User);
+
+exports.UnverifiedNeedy = catchAsync(async (req, res, next) => {
+  const user = await User.aggregate([
+    {
+      $match: { role: 'unverified', temprole: 'needy' },
+    },
+  ]);
+
+  res.status(200).json({
+    status: 'success',
+    result: user.length,
+    data: user,
+  });
+});

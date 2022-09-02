@@ -47,6 +47,14 @@ router.get(
 );
 
 router
+  .route('/unverifiedneedy')
+  .get(
+    authController.protect,
+    authController.restrictTo('admin'),
+    userController.UnverifiedNeedy
+  );
+
+router
   .route('/:id')
   .get(
     authController.protect,
