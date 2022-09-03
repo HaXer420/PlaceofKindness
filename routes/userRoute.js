@@ -39,6 +39,14 @@ router.delete('/deleteMe', authController.protect, userController.deleteMe);
 
 /////////////////////////////////////////////////////////////////
 //admin
+
+router.patch(
+  '/needyverify/:id',
+  authController.protect,
+  authController.restrictTo('admin'),
+  userController.needyVerify
+);
+
 router.get(
   '/',
   authController.protect,

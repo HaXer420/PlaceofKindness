@@ -122,3 +122,20 @@ exports.UnverifiedNeedy = catchAsync(async (req, res, next) => {
     data: user,
   });
 });
+
+exports.needyVerify = catchAsync(async (req, res, next) => {
+  const needy = await User.findById(req.params.id);
+
+  if (!needy) {
+    return next(new AppError('No User found with the given ID', 400));
+  }
+
+  needy.role = needy.temprole;
+  needy.temprole = undefined;
+  await needy.save({ validateBeforeSave: false });
+
+  res.status(200).json({
+    status: 'success',
+    message: 'Needy Verified!',
+  });
+});
