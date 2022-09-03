@@ -3,6 +3,7 @@ const AppError = require('../utils/appError');
 const catchAsync = require('../utils/catchAsync');
 const factory = require('./factoryHandler');
 const cloudinary = require('../utils/cloudinary');
+const sendEmail = require('../utils/email');
 
 // multer
 
@@ -134,8 +135,22 @@ exports.needyVerify = catchAsync(async (req, res, next) => {
   needy.temprole = undefined;
   await needy.save({ validateBeforeSave: false });
 
-  res.status(200).json({
-    status: 'success',
-    message: 'Needy Verified!',
-  });
+  const message = `Your account has been verified! ${needy.name}. Now you can access all the features of POK.`;
+
+  try {
+    await sendEmail({
+      email: needy.email,
+      subject: 'Your Account Verified!',
+      message,
+    });
+
+    res.status(200).json({
+      status: 'success',
+      message: 'Needy Verified!',
+    });
+  } catch (err) {
+    return next(
+      new AppError('There was error sending email please try again later!', 500)
+    );
+  }
 });
