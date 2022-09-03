@@ -17,6 +17,13 @@ router.get(
   itemController.unavailableItems
 );
 
+router.patch(
+  '/makeitemavailable/:id',
+  authController.protect,
+  authController.restrictTo('admin'),
+  itemController.makeItemavailable
+);
+
 router
   .route('/createItem')
   .post(
