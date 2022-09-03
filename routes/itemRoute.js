@@ -2,6 +2,7 @@ const express = require('express');
 const itemController = require('../controllers/itemController');
 const authController = require('../controllers/authController');
 const getItemRouter = require('./needyItemRoute');
+const multer = require('../utils/multer');
 
 const router = express.Router();
 
@@ -22,6 +23,9 @@ router
     authController.protect,
     authController.restrictTo('donator'),
     itemController.setItemUser,
+    multer.uploadUserImg,
+    multer.UserImgResize,
+    itemController.setItemPhoto,
     itemController.createItem
   );
 

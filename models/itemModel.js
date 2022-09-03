@@ -9,6 +9,7 @@ const itemSchema = mongoose.Schema(
     },
     photo: {
       type: String,
+      required: true,
       default: 'defaultitem.jgp',
     },
     category: {

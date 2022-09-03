@@ -7,6 +7,11 @@ exports.setItemUser = catchAsync(async (req, res, next) => {
   next();
 });
 
+exports.setItemPhoto = catchAsync(async (req, res, next) => {
+  req.body.photo = req.file.filename;
+  next();
+});
+
 exports.createItem = factory.createOne(Item);
 exports.getAllItem = factory.getAll(Item);
 exports.getItem = factory.getOne(Item);

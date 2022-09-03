@@ -43,3 +43,35 @@ exports.unsentItems = catchAsync(async (req, res, next) => {
     data: purchase,
   });
 });
+
+exports.needyunsentItems = catchAsync(async (req, res, next) => {
+  // const needyItem = await getItem.aggregate([
+  //   {
+  //     $match: { shipped: false, user: { $in: [req.params.id] } },
+  //   },
+  // ]);
+
+  const needyItem = await getItem.find({
+    user: { $in: [req.user.id] },
+    shipped: false,
+  });
+
+  res.status(200).json({
+    status: 'success',
+    total: needyItem.length,
+    data: needyItem,
+  });
+});
+
+exports.needysentItems = catchAsync(async (req, res, next) => {
+  const needyItem = await getItem.find({
+    user: { $in: [req.user.id] },
+    shipped: true,
+  });
+
+  res.status(200).json({
+    status: 'success',
+    total: needyItem.length,
+    data: needyItem,
+  });
+});

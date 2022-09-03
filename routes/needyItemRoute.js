@@ -17,6 +17,21 @@ router
     getItemController.createGetItem
   );
 
+router
+  .route('/needyunsentitems')
+  .get(
+    authController.protect,
+    authController.restrictTo('needy'),
+    getItemController.needyunsentItems
+  );
+router
+  .route('/needysentitems')
+  .get(
+    authController.protect,
+    authController.restrictTo('needy'),
+    getItemController.needysentItems
+  );
+
 router.get(
   '/unshipped',
   authController.protect,
