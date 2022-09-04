@@ -47,7 +47,7 @@ exports.getCheckoutSession = catchAsync(async (req, res, next) => {
 
 exports.createDonationCheckout = catchAsync(async (req, res, next) => {
   const { user, amount } = req.query;
-  console.log(amount);
+  const pkr = amount * 1;
 
   if (!user && !amount) return next();
 
@@ -59,7 +59,7 @@ exports.createDonationCheckout = catchAsync(async (req, res, next) => {
     return next(new AppError('No User found', 400));
   }
 
-  user1.donated += amount;
+  user1.donated += pkr;
   await user1.save({ validateBeforeSave: false });
 
   // res.redirect(req.originalUrl.split('?')[0]);
