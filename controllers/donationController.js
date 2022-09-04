@@ -15,7 +15,7 @@ exports.getCheckoutSession = catchAsync(async (req, res, next) => {
     // success_url: `${req.protocol}://${req.get(
     //   'host'
     // )}/api/v1/donations/create-donations/?user=${req.user.id}&amount=${amount}`,
-    success_url: `http://localhost:3000/donordash`,
+    success_url: `http://localhost:3000/getUrl/?user=${req.user.id}&amount=${amount}`,
     cancel_url: `${req.protocol}://${req.get('host')}/posts/,`,
     customer_email: req.user.email,
     client_reference_id: req.user.id,
