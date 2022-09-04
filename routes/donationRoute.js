@@ -15,10 +15,17 @@ router.get(
   donationController.getCheckoutSession
 );
 
-// router.get(
-//   '/my-donations',
-//   authController.protect,
-//   donationController.getMyDonations
-// );
+router.post(
+  '/create-donations',
+  authController.protect,
+  donationController.createDonationCheckout,
+  donationController.getMyDonations
+);
+
+router.get(
+  '/my-donations',
+  authController.protect,
+  donationController.getMyDonations
+);
 
 module.exports = router;

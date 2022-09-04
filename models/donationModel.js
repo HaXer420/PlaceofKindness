@@ -24,3 +24,7 @@ donationSchema.pre(/^find/, function (next) {
 
   next();
 });
+
+const Donation = mongoose.model('Donations', donationSchema);
+
+module.exports = Donation;

@@ -9,6 +9,7 @@ exports.setItemUser = catchAsync(async (req, res, next) => {
 });
 
 exports.setItemPhoto = catchAsync(async (req, res, next) => {
+  req.body.user = req.user.id;
   req.body.photo = req.file.filename;
   next();
 });

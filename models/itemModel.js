@@ -14,7 +14,14 @@ const itemSchema = mongoose.Schema(
     },
     category: {
       type: String,
-      enum: ['Clothing', 'Shoes', 'Electronics', 'House Items', 'others'],
+      enum: [
+        'Clothing',
+        'Shoes',
+        'Electronics',
+        'House Items',
+        'others',
+        'Item',
+      ],
       default: 'Item',
     },
     createdAt: {
