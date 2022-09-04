@@ -39,6 +39,7 @@ exports.getCheckoutSession = catchAsync(async (req, res, next) => {
 
   res.status(200).json({
     status: 'success',
+    url: session.url,
     data: {
       session,
     },
