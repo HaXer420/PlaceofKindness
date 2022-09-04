@@ -39,6 +39,13 @@ router.get(
   getItemController.unsentItems
 );
 
+router.patch(
+  '/itemshiptoneedy/:id',
+  authController.protect,
+  authController.restrictTo('admin'),
+  getItemController.itemshippedtoneedy
+);
+
 router
   .route('/allpurchasing')
   .get(

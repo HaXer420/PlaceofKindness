@@ -75,3 +75,19 @@ exports.needysentItems = catchAsync(async (req, res, next) => {
     data: needyItem,
   });
 });
+
+exports.itemshippedtoneedy = catchAsync(async (req, res, next) => {
+  const getitem = await getItem.findById(req.params.id);
+
+  if (!getitem) {
+    return next(new AppError('No Purchasing found with the given ID', 400));
+  }
+
+  getitem.shipped = true;
+  await getitem.save({ validateBeforeSave: false });
+
+  res.status(200).json({
+    status: 'success',
+    message: 'Item Successfully Shipped to the Requested Person',
+  });
+});
