@@ -16,15 +16,13 @@ dotenv.config({ path: './config.env' });
 
 const app = express();
 
-// app.use(cors());
+app.use(cors());
 
-// app.options('*', cors());
-const corsOptions = {
-  origin: '*',
-  credentials: true, //access-control-allow-credentials:true
-  optionSuccessStatus: 200,
-};
-app.use(cors(corsOptions));
+app.options('*', cors());
+
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+});
 
 app.use(express.json());
 
