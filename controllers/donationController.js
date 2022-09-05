@@ -22,10 +22,10 @@ exports.getCheckoutSession = catchAsync(async (req, res, next) => {
   // create stripe checkout session
   const session = await stripe.checkout.sessions.create({
     payment_method_types: ['card'],
-    success_url: `${req.protocol}://${req.get(
-      'host'
-    )}/api/v1/donations/create-donations/?usertoken=${transactionToken}&amount=${amount}`,
-    // success_url: `http://localhost:3000/donordash/?usertoken=${transactionToken}&amount=${amount}`,
+    // success_url: `${req.protocol}://${req.get(
+    //   'host'
+    // )}/api/v1/donations/create-donations/?usertoken=${transactionToken}&amount=${amount}`,
+    success_url: `http://localhost:3000/donordash/?usertoken=${transactionToken}&amount=${amount}`,
     cancel_url: `${req.protocol}://${req.get('host')}/posts/,`,
     customer_email: req.user.email,
     client_reference_id: req.user.id,
