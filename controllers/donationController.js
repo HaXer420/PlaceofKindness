@@ -1,21 +1,31 @@
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+const crypto = require('crypto');
 const User = require('../models/userModel');
 const Donation = require('../models/donationModel');
 const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
 
 exports.getCheckoutSession = catchAsync(async (req, res, next) => {
-  // const tour = await Tour.findById(req.params.tourId);
-  //   console.log(tour);
+  const user = await User.findOne({ email: req.user.email });
+
+  // see if email exist
+
+  if (!user) {
+    return next(new AppError('Email not found Please enter a valid one!'));
+  }
+  //generate reset token
+  const transactionToken = user.TransConfirmToken();
+  await user.save({ validateBeforeSave: false });
+
   const amount = req.params.amount * 1;
 
   // create stripe checkout session
   const session = await stripe.checkout.sessions.create({
     payment_method_types: ['card'],
-    // success_url: `${req.protocol}://${req.get(
-    //   'host'
-    // )}/api/v1/donations/create-donations/?user=${req.user.id}&amount=${amount}`,
-    success_url: `http://localhost:3000/donordash/?user=${req.user.id}&amount=${amount}`,
+    success_url: `${req.protocol}://${req.get(
+      'host'
+    )}/api/v1/donations/create-donations/?usertoken=${transactionToken}&amount=${amount}`,
+    // success_url: `http://localhost:3000/donordash/?usertoken=${transactionToken}&amount=${amount}`,
     cancel_url: `${req.protocol}://${req.get('host')}/posts/,`,
     customer_email: req.user.email,
     client_reference_id: req.user.id,
@@ -48,20 +58,37 @@ exports.getCheckoutSession = catchAsync(async (req, res, next) => {
 });
 
 exports.createDonationCheckout = catchAsync(async (req, res, next) => {
-  const { user, amount } = req.query;
+  const { usertoken, amount } = req.query;
   const pkr = amount * 1;
 
-  if (!user && !amount) return next();
+  const hashedToken = crypto
+    .createHash('sha256')
+    .update(usertoken)
+    .digest('hex');
 
-  await Donation.create({ user, amount });
+  if (!usertoken && !amount) return next();
 
-  const user1 = await User.findById(user);
+  const user1 = await User.findOne({
+    tranConfirmToken: hashedToken,
+  });
+
+  if (!user1)
+    return next(
+      new AppError('User not found or already made transaction', 400)
+    );
+
+  const userid = user1.id;
+
+  console.log(userid);
+
+  await Donation.create({ user: userid, amount });
 
   if (!user1) {
     return next(new AppError('No User found', 400));
   }
 
   user1.donated += pkr;
+  user1.tranConfirmToken = undefined;
   await user1.save({ validateBeforeSave: false });
 
   // res.redirect(req.originalUrl.split('?')[0]);

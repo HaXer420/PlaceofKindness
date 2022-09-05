@@ -79,6 +79,7 @@ const userSchema = mongoose.Schema(
       default: true,
     },
     confirmEmailToken: String,
+    tranConfirmToken: String,
   },
   {
     toJSON: { virtuals: true },
@@ -166,6 +167,17 @@ userSchema.methods.emailConfirmToken = function () {
     .digest('hex');
 
   return confirmEmail;
+};
+
+userSchema.methods.TransConfirmToken = function () {
+  const confirmTrans = crypto.randomBytes(32).toString('hex');
+
+  this.tranConfirmToken = crypto
+    .createHash('sha256')
+    .update(confirmTrans)
+    .digest('hex');
+
+  return confirmTrans;
 };
 
 const User = mongoose.model('User', userSchema);
