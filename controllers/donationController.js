@@ -4,11 +4,10 @@ const User = require('../models/userModel');
 const Donation = require('../models/donationModel');
 const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
+const factory = require('./factoryHandler');
 
 exports.getCheckoutSession = catchAsync(async (req, res, next) => {
   const user = await User.findOne({ email: req.user.email });
-
-  // see if email exist
 
   if (!user) {
     return next(new AppError('Email not found Please enter a valid one!'));
@@ -79,7 +78,7 @@ exports.createDonationCheckout = catchAsync(async (req, res, next) => {
 
   const userid = user1.id;
 
-  console.log(userid);
+  // console.log(userid);
 
   await Donation.create({ user: userid, amount });
 
@@ -98,9 +97,6 @@ exports.createDonationCheckout = catchAsync(async (req, res, next) => {
 
 exports.getMyDonations = catchAsync(async (req, res, next) => {
   const donation = await Donation.find({ user: req.user.id });
-
-  // const tourIDs = booking.map((el) => el.tour);
-  // const tours = await Tour.find({ _id: { $in: tourIDs } });
 
   res.status(200).json({
     status: 'success',
@@ -183,3 +179,8 @@ exports.Top5Don = catchAsync(async (req, res, next) => {
     users,
   });
 });
+
+exports.getAllDonation = factory.getAll(Donation);
+exports.getDonation = factory.getOne(Donation);
+exports.updateDonation = factory.updateOne(Donation);
+exports.deleteDonation = factory.deleteOne(Donation);

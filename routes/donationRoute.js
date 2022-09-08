@@ -25,7 +25,37 @@ router.post(
 router.get(
   '/my-donations',
   authController.protect,
+  authController.restrictTo('donator'),
   donationController.getMyDonations
 );
+
+////////////////////////////
+//// Admin Routes
+
+router
+  .route('all-donations')
+  .get(
+    authController.protect,
+    authController.restrictTo('admin'),
+    donationController.getAllDonation
+  );
+
+router
+  .route('/:id')
+  .get(
+    authController.protect,
+    authController.restrictTo('admin'),
+    donationController.getDonation
+  )
+  .patch(
+    authController.protect,
+    authController.restrictTo('admin'),
+    donationController.updateDonation
+  )
+  .delete(
+    authController.protect,
+    authController.restrictTo('admin'),
+    donationController.deleteDonation
+  );
 
 module.exports = router;

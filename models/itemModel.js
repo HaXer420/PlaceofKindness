@@ -19,7 +19,7 @@ const itemSchema = mongoose.Schema(
         'Shoes',
         'Electronics',
         'House Items',
-        'others',
+        'Others',
         'Item',
       ],
       default: 'Item',
