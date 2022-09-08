@@ -33,7 +33,7 @@ router.get(
 //// Admin Routes
 
 router
-  .route('all-donations')
+  .route('/all-donations')
   .get(
     authController.protect,
     authController.restrictTo('admin'),
