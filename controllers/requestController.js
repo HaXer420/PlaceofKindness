@@ -41,7 +41,7 @@ exports.getCheckoutSession = catchAsync(async (req, res, next) => {
     return next(new AppError('Request Post not found', 404));
   }
 
-  if (request.paid === true) {
+  if (request.paid === true || request.moneygot >= request.amount) {
     return next(new AppError('User already got the required amount'));
   }
 
@@ -114,7 +114,7 @@ exports.createDonationCheckout = catchAsync(async (req, res, next) => {
       new AppError('User not found or already made transaction', 400)
     );
 
-  const request = await Request.findOne({ id: post });
+  const request = await Request.findById(post);
 
   if (!request) {
     return next(new AppError('Request Post is not found', 400));
@@ -134,7 +134,9 @@ exports.createDonationCheckout = catchAsync(async (req, res, next) => {
   user1.tranConfirmToken = undefined;
   await user1.save({ validateBeforeSave: false });
 
-  request.moneygot += amount;
+  request.moneygot += pkr;
+  console.log(request, `amount :${amount}`);
+  await request.save({ validateBeforeSave: false });
 
   if (request.moneygot >= request.amount) {
     request.paid = true;

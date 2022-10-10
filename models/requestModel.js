@@ -23,12 +23,9 @@ const requestSchema = mongoose.Schema(
     },
     moneygot: {
       type: Number,
+      default: 0,
     },
     paid: {
-      type: Boolean,
-      default: false,
-    },
-    given: {
       type: Boolean,
       default: false,
     },
@@ -50,7 +47,9 @@ const requestSchema = mongoose.Schema(
 );
 
 requestSchema.virtual('FundsRemain').get(function () {
-  return this.amount - this.moneygot;
+  const amount = this.amount - this.moneygot;
+  if (amount <= 0) return 0;
+  return amount;
 });
 
 requestSchema.pre(/^find/, function (next) {
