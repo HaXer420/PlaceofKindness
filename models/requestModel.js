@@ -21,6 +21,13 @@ const requestSchema = mongoose.Schema(
       type: String,
       required: [true, 'must enter payment address'],
     },
+    moneygot: {
+      type: Number,
+    },
+    paid: {
+      type: Boolean,
+      default: false,
+    },
     given: {
       type: Boolean,
       default: false,
@@ -41,6 +48,11 @@ const requestSchema = mongoose.Schema(
     toObject: { virtuals: true },
   }
 );
+
+requestSchema.virtual('FundsRemain').get(function () {
+  return this.amount - this.moneygot;
+});
+
 requestSchema.pre(/^find/, function (next) {
   this.populate({
     path: 'user',

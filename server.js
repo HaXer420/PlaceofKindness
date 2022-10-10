@@ -21,7 +21,10 @@ mongoose
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
-  .then(() => console.log('Server connected with DB Successfully'));
+  .then(() => console.log('Server connected with DB Successfully'))
+  .catch((err) => {
+    console.log('Connection Failed');
+  });
 
 const port = process.env.PORT || 4000;
 
