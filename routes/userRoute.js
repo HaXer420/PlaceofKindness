@@ -2,8 +2,13 @@ const express = require('express');
 const userController = require('../controllers/userController');
 const authController = require('../controllers/authController');
 const multer = require('../utils/multer');
+const aggregation = require('../controllers/factoryHandler');
 
 const router = express.Router();
+
+/////////////////
+//// Aggregation Route for (Total: Donator,donations,items,needy)
+router.get('/totaldata', aggregation.Aggregations);
 
 router.route('/needyusers').get(userController.needyUsers);
 

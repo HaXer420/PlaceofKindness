@@ -1,6 +1,9 @@
 const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
 const APIFeatures = require('../utils/apiFeatures');
+const User = require('../models/userModel');
+const Donation = require('../models/donationModel');
+const Item = require('../models/itemModel');
 
 exports.deleteOne = (Model) =>
   catchAsync(async (req, res, next) => {
@@ -93,3 +96,52 @@ exports.getAll = (Model) =>
       data: doc,
     });
   });
+
+exports.Aggregations = catchAsync(async (req, res, next) => {
+  const needyusers = await User.aggregate([
+    {
+      $match: { role: 'needy' },
+    },
+  ]);
+
+  const donatorusers = await User.aggregate([
+    {
+      $match: { role: 'donator' },
+    },
+  ]);
+
+  const totalitem = await Item.aggregate([
+    {
+      $match: { available: true },
+    },
+  ]);
+
+  const totaldonation = await User.aggregate([
+    {
+      $match: {
+        amount: {
+          $gte: '1',
+        },
+      },
+    },
+    {
+      $group: {
+        _id: '$_id',
+        totaldonations: { $sum: '$amount' },
+      },
+    },
+    {
+      $project: {
+        total: '$totaldonations',
+      },
+    },
+  ]);
+
+  res.status(200).json({
+    message: 'Success',
+    Needy: needyusers.length,
+    Donators: donatorusers.length,
+    Items: totalitem.length,
+    Donation: totaldonation,
+  });
+});
