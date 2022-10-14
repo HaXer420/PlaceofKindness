@@ -116,32 +116,55 @@ exports.Aggregations = catchAsync(async (req, res, next) => {
     },
   ]);
 
-  const totaldonation = await User.aggregate([
-    {
-      $match: {
-        amount: {
-          $gte: '1',
-        },
-      },
-    },
-    {
-      $group: {
-        _id: '$_id',
-        totaldonations: { $sum: '$amount' },
-      },
-    },
-    {
-      $project: {
-        total: '$totaldonations',
-      },
-    },
-  ]);
+  const donation = await Donation.find().select('-__v -createdAt -user -_id');
+
+  let totaldonation = 0;
+  donation.forEach((element) => {
+    totaldonation += element.amount;
+  });
+  // console.log(totaldonation);
+
+  // let totaldonate = {};
+  // totaldonation.map((item) => {
+  //   totaldonate = +item.amount;
+  // });
+
+  // let newObj = {};
+  // Object.keys(totaldonation).forEach((el) => {
+  //   newObj[el] += totaldonation[el];
+  // });
+  // console.log(newObj);
+
+  // User.aggregate([
+  //   // {
+  //   //   $match: {
+  //   //     amount: {
+  //   //       $gte: '1',
+  //   //     },
+  //   //   },
+  //   // },
+  //   // { $group: { _id: '$amount', count: { $sum: 1 } } },
+  //   // {
+  //   //   $unwind: '$amount',
+  //   // },
+  //   // {
+  //   //   $group: {
+  //   //     _id: '$amount',
+  //   //     amount: { $push: '$amount' },
+  //   //   },
+  //   // },
+  //   // {
+  //   //   $project: {
+  //   //     total: '$totaldonations',
+  //   //   },
+  //   // },
+  // ]);
 
   res.status(200).json({
     message: 'Success',
     Needy: needyusers.length,
     Donators: donatorusers.length,
-    Items: totalitem.length,
+    DonatedItems: totalitem.length,
     Donation: totaldonation,
   });
 });
