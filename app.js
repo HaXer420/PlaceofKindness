@@ -5,6 +5,7 @@ const dotenv = require('dotenv');
 const userRouter = require('./routes/userRoute');
 const itemRouter = require('./routes/itemRoute');
 const getitemRouter = require('./routes/needyItemRoute');
+const galleryRouter = require('./routes/galleryRoute');
 const commentRouter = require('./routes/commentRoute');
 const requestRouter = require('./routes/requestRoute');
 const postRouter = require('./routes/postRoute');
@@ -46,6 +47,7 @@ app.use('/api/v1/posts', postRouter);
 app.use('/api/v1/donations', donationRouter);
 app.use('/api/v1/needyitem', getitemRouter);
 app.use('/api/v1/request', requestRouter);
+app.use('/api/v1/gallery', galleryRouter);
 
 app.all('*', (req, res, next) => {
   next(new AppError(`Couldn't fint the ${req.originalUrl} url`, 404));

@@ -7,7 +7,6 @@ const router = express.Router({ mergeParams: true });
 // router.route('/').get(itemController.getAllItem);
 
 /////////////////////////////////
-//// Admin Routes
 
 router
   .route('/')
