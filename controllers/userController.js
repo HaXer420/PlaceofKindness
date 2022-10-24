@@ -1,3 +1,4 @@
+const superagent = require('superagent');
 const User = require('../models/userModel');
 const AppError = require('../utils/appError');
 const catchAsync = require('../utils/catchAsync');
@@ -130,6 +131,74 @@ exports.needyVerify = catchAsync(async (req, res, next) => {
   if (!needy) {
     return next(new AppError('No User found with the given ID', 400));
   }
+
+  needy.role = needy.temprole;
+  needy.temprole = undefined;
+  await needy.save({ validateBeforeSave: false });
+
+  const message = `Your account has been verified! ${needy.name}. Now you can access all the features of POK.`;
+
+  try {
+    await sendEmail({
+      email: needy.email,
+      subject: 'Your Account Verified!',
+      message,
+    });
+
+    res.status(200).json({
+      status: 'success',
+      message: 'Needy Verified!',
+    });
+  } catch (err) {
+    return next(
+      new AppError('There was error sending email please try again later!', 500)
+    );
+  }
+});
+
+exports.needyselfVerify = catchAsync(async (req, res, next) => {
+  const needy = await User.findById(req.user.id);
+
+  if (!needy) {
+    return next(new AppError('No User found with the given ID', 400));
+  }
+  // console.log(req.file.filename);
+
+  if (!req.file.filename) {
+    return next(new AppError('Picture not upload Please re-upload it!', 400));
+  }
+
+  const cnic = await superagent.get(
+    `http://api.qrserver.com/v1/read-qr-code/?fileurl=${req.file.filename}`
+  );
+
+  // console.log(cnic.text[57]);
+
+  const arr = cnic.text;
+
+  const result = arr.slice(57, 70);
+
+  if (result.includes('download err')) {
+    return next(
+      new AppError('File is too Big, reduce file size to max 1mb!', 404)
+    );
+  }
+  if (result.includes('could not')) {
+    return next(
+      new AppError(
+        'Your Card Picture does not have QR code on it or the Code is not clear, Please take clear picture of your card back!',
+        404
+      )
+    );
+  }
+
+  const cmpcnic = result * 1;
+  // console.log(cmpcnic);
+  // console.log(needy.cnic);
+  if (cmpcnic !== needy.cnic)
+    return next(
+      new AppError('Invalid or not your Card, Please use yours!', 404)
+    );
 
   needy.role = needy.temprole;
   needy.temprole = undefined;

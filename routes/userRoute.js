@@ -20,6 +20,17 @@ router
 router.post('/signupneedy', authController.signupneedy);
 
 router.patch('/emailConfirm/:token', authController.emailConfirm);
+///////////////
+/// needyselfverify
+
+router.patch(
+  '/selfverifyneedy',
+  authController.protect,
+  authController.restrictTo('unverified'),
+  multer.uploadUserImg,
+  multer.UserImgResize,
+  userController.needyselfVerify
+);
 
 router.route('/login').post(authController.login);
 router.route('/forgotpassword').post(authController.forgotPassword);
