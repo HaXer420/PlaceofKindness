@@ -20,6 +20,15 @@ const contactSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  closed: {
+    type: Boolean,
+    default: false,
+  },
+  user: {
+    type: mongoose.Schema.ObjectId,
+    ref: 'User',
+    required: [true, 'Must be added by user'],
+  },
   attachments: String,
   reply: [
     {
