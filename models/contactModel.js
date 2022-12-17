@@ -1,16 +1,10 @@
 const mongoose = require('mongoose');
-const validator = require('validator');
+// const validator = require('validator');
 
 const contactSchema = new mongoose.Schema({
-  name: {
+  title: {
     type: String,
     required: [true, 'Must have a name'],
-  },
-  email: {
-    type: String,
-    required: [true, 'Must have a email'],
-    lowercase: true,
-    validate: [validator.isEmail, 'Enter valid email'],
   },
   message: {
     type: String,
