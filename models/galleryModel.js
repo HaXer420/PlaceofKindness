@@ -1,6 +1,9 @@
 const mongoose = require('mongoose');
 
 const gallerySchema = mongoose.Schema({
+  title: {
+    type: String,
+  },
   photo: {
     type: String,
     default: 'default.jpg',

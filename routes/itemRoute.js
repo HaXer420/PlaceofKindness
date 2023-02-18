@@ -10,6 +10,8 @@ router.use('/:itemid/needyitem', getItemRouter);
 
 router.route('/').get(itemController.getAllItem);
 
+router.get('/availableitems', itemController.getavailableitems);
+
 router.get(
   '/unavailableitems',
   authController.protect,

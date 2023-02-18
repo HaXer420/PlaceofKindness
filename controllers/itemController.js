@@ -2,6 +2,7 @@ const Item = require('../models/itemModel');
 const catchAsync = require('../utils/catchAsync');
 const factory = require('./factoryHandler');
 const AppError = require('../utils/appError');
+const APIFeatures = require('../utils/apiFeatures');
 
 exports.setItemUser = catchAsync(async (req, res, next) => {
   if (!req.body.user) req.body.user = req.user.id;
@@ -12,6 +13,32 @@ exports.setItemPhoto = catchAsync(async (req, res, next) => {
   req.body.user = req.user.id;
   req.body.photo = req.file.filename;
   next();
+});
+
+exports.getavailableitems = catchAsync(async (req, res, next) => {
+  const features = new APIFeatures(
+    Item.find({
+      $and: [{ available: { $eq: true } }, { given: { $eq: false } }],
+    }),
+    req.query
+  )
+    .filter()
+    .sorting()
+    .field()
+    .paging();
+
+  // const doc = await features.query.explain();
+  const doc = await features.query;
+
+  // const items = await Item.find({
+  //   $and: [{ available: { $eq: true } }, { given: { $eq: false } }],
+  // });
+
+  res.status(200).json({
+    status: 'Success',
+    size: doc.length,
+    doc,
+  });
 });
 
 exports.createItem = factory.createOne(Item);
