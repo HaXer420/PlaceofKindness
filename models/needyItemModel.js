@@ -38,11 +38,11 @@ const getItemSchema = mongoose.Schema(
 getItemSchema.pre(/^find/, function (next) {
   this.populate({
     path: 'user',
-    select: 'name',
+    select: 'name photo',
   });
   this.populate({
     path: 'item',
-    select: 'name',
+    select: 'name photo category',
   });
   next();
 });
