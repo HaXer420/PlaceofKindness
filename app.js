@@ -12,6 +12,7 @@ const postRouter = require('./routes/postRoute');
 const contactRouter = require('./routes/contactRoute');
 const donationRouter = require('./routes/donationRoute');
 const causesRouter = require('./routes/causesRoute');
+const AnnoucmentRouter = require('./routes/annoucementRoute');
 const AppError = require('./utils/appError');
 const globalErrorHandler = require('./controllers/errorController');
 
@@ -52,6 +53,7 @@ app.use('/api/v1/request', requestRouter);
 app.use('/api/v1/gallery', galleryRouter);
 app.use('/api/v1/contact', contactRouter);
 app.use('/api/v1/causes', causesRouter);
+app.use('/api/v1/annoucment', AnnoucmentRouter);
 
 app.all('*', (req, res, next) => {
   next(new AppError(`Couldn't fint the ${req.originalUrl} url`, 404));
