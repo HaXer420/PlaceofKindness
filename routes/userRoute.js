@@ -32,6 +32,15 @@ router.patch(
   userController.needyselfVerify
 );
 
+router.patch(
+  '/selfverifyneedyadvance',
+  authController.protect,
+  authController.restrictTo('unverified'),
+  multer.uploadUserImg,
+  multer.UserImgResize,
+  userController.needyselfVerifyadvance
+);
+
 router.route('/login').post(authController.login);
 router.route('/forgotpassword').post(authController.forgotPassword);
 router.route('/resetpassword/:token').patch(authController.resetPassword);

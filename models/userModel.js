@@ -29,6 +29,9 @@ const userSchema = mongoose.Schema(
       minlength: [13, 'must be equal to 13 length'],
       maxlength: [13, 'must be equal to 13 length'],
     },
+    mobnumber: Number,
+    address: String,
+    city: String,
     photo: {
       type: String,
       default:

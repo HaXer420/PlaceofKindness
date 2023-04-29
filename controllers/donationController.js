@@ -18,6 +18,8 @@ exports.getCheckoutSession = catchAsync(async (req, res, next) => {
 
   const amount = req.params.amount * 1;
 
+  console.log('hhhui', transactionToken);
+
   // create stripe checkout session
   const session = await stripe.checkout.sessions.create({
     payment_method_types: ['card'],
@@ -25,7 +27,7 @@ exports.getCheckoutSession = catchAsync(async (req, res, next) => {
     //   'host'
     // )}/api/v1/donations/create-donations/?usertoken=${transactionToken}&amount=${amount}`,
     success_url: `http://localhost:3000/paymentsuccessful?usertoken=${transactionToken}&amount=${amount}`,
-    cancel_url: `${req.protocol}://${req.get('host')}/posts/,`,
+    cancel_url: `http://localhost:3000/donatemoney`,
     customer_email: req.user.email,
     client_reference_id: req.user.id,
 
@@ -59,6 +61,8 @@ exports.getCheckoutSession = catchAsync(async (req, res, next) => {
 exports.createDonationCheckout = catchAsync(async (req, res, next) => {
   const { usertoken, amount } = req.query;
   const pkr = amount * 1;
+
+  console.log('token..', usertoken);
 
   const hashedToken = crypto
     .createHash('sha256')
