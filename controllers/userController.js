@@ -29,7 +29,14 @@ exports.updateMe = catchAsync(async (req, res, next) => {
     );
   }
 
-  const filterObject = currentObj(req.body, 'name', 'email');
+  const filterObject = currentObj(
+    req.body,
+    'name',
+    'email',
+    'mobnumber',
+    'address',
+    'city'
+  );
 
   if (req.file) filterObject.photo = req.file.filename;
 
