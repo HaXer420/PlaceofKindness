@@ -57,9 +57,7 @@ exports.getCheckoutSession = catchAsync(async (req, res, next) => {
   // create stripe checkout session
   const session = await stripe.checkout.sessions.create({
     payment_method_types: ['card'],
-    success_url: `${req.protocol}://${req.get(
-      'host'
-    )}/api/v1/request/create-donations/?usertoken=${transactionToken}&amount=${amount}&post=${
+    success_url: `http://localhost:3000/requestsuccessful?usertoken=${transactionToken}&amount=${amount}&post=${
       req.params.request
     }`,
     // success_url: `http://localhost:3000/donatemoney/?usertoken=${transactionToken}&amount=${amount}`,
