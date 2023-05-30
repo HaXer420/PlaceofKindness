@@ -87,7 +87,7 @@ exports.signup = catchAsync(async (req, res, next) => {
     password: req.body.password,
     passwordConfirm: req.body.passwordConfirm,
     passwordChangedAt: req.body.passwordChangedAt,
-    temprole: req.body.role,
+    role: req.body.role,
     cnic: Math.random(13),
   });
 
