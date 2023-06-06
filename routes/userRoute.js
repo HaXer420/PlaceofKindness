@@ -6,6 +6,8 @@ const aggregation = require('../controllers/factoryHandler');
 
 const router = express.Router();
 
+////////////// Graph Data
+router.get('/graph', userController.GraphData);
 /////////////////
 //// Aggregation Route for (Total: Donator,donations,items,needy)
 router.get('/totaldata', aggregation.Aggregations);

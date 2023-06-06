@@ -6,6 +6,10 @@ const catchAsync = require('../utils/catchAsync');
 const factory = require('./factoryHandler');
 const cloudinary = require('../utils/cloudinary');
 const sendEmail = require('../utils/email');
+const Item = require('../models/itemModel');
+const Post = require('../models/postModel');
+const Donation = require('../models/donationModel');
+const Request = require('../models/requestModel');
 
 // multer
 
@@ -386,4 +390,184 @@ CoreAPI.generateContract("Template ID", "PDF", {"email":"user@example.com"}); //
       alert: 'Please Upload Valid Documents',
     });
   }
+});
+
+exports.GraphData = catchAsync(async (req, res, next) => {
+  const year = '2023'; // Assuming the year is passed as a parameter
+
+  const monthlyPostCounts = await Post.aggregate([
+    {
+      $match: {
+        createdAt: {
+          $gte: new Date(`${year}-01-01`),
+          $lte: new Date(`${year}-12-31`),
+        },
+      },
+    },
+    {
+      $group: {
+        _id: { $month: '$createdAt' },
+        count: { $sum: 1 },
+      },
+    },
+    {
+      $project: {
+        _id: 0,
+        month: {
+          $switch: {
+            branches: [
+              { case: { $eq: ['$_id', 1] }, then: 'Jan' },
+              { case: { $eq: ['$_id', 2] }, then: 'Feb' },
+              { case: { $eq: ['$_id', 3] }, then: 'Mar' },
+              { case: { $eq: ['$_id', 4] }, then: 'Apr' },
+              { case: { $eq: ['$_id', 5] }, then: 'May' },
+              { case: { $eq: ['$_id', 6] }, then: 'Jun' },
+              { case: { $eq: ['$_id', 7] }, then: 'Jul' },
+              { case: { $eq: ['$_id', 8] }, then: 'Aug' },
+              { case: { $eq: ['$_id', 9] }, then: 'Sep' },
+              { case: { $eq: ['$_id', 10] }, then: 'Oct' },
+              { case: { $eq: ['$_id', 11] }, then: 'Nov' },
+              { case: { $eq: ['$_id', 12] }, then: 'Dec' },
+            ],
+            default: 'Unknown',
+          },
+        },
+        count: 1,
+      },
+    },
+  ]);
+
+  const monthlyRequestCounts = await Request.aggregate([
+    {
+      $match: {
+        createdAt: {
+          $gte: new Date(`${year}-01-01`),
+          $lte: new Date(`${year}-12-31`),
+        },
+      },
+    },
+    {
+      $group: {
+        _id: { $month: '$createdAt' },
+        count: { $sum: 1 },
+      },
+    },
+    {
+      $project: {
+        _id: 0,
+        month: {
+          $switch: {
+            branches: [
+              { case: { $eq: ['$_id', 1] }, then: 'Jan' },
+              { case: { $eq: ['$_id', 2] }, then: 'Feb' },
+              { case: { $eq: ['$_id', 3] }, then: 'Mar' },
+              { case: { $eq: ['$_id', 4] }, then: 'Apr' },
+              { case: { $eq: ['$_id', 5] }, then: 'May' },
+              { case: { $eq: ['$_id', 6] }, then: 'Jun' },
+              { case: { $eq: ['$_id', 7] }, then: 'Jul' },
+              { case: { $eq: ['$_id', 8] }, then: 'Aug' },
+              { case: { $eq: ['$_id', 9] }, then: 'Sep' },
+              { case: { $eq: ['$_id', 10] }, then: 'Oct' },
+              { case: { $eq: ['$_id', 11] }, then: 'Nov' },
+              { case: { $eq: ['$_id', 12] }, then: 'Dec' },
+            ],
+            default: 'Unknown',
+          },
+        },
+        count: 1,
+      },
+    },
+  ]);
+
+  const monthlyItemsCounts = await Item.aggregate([
+    {
+      $match: {
+        createdAt: {
+          $gte: new Date(`${year}-01-01`),
+          $lte: new Date(`${year}-12-31`),
+        },
+      },
+    },
+    {
+      $group: {
+        _id: { $month: '$createdAt' },
+        count: { $sum: 1 },
+      },
+    },
+    {
+      $project: {
+        _id: 0,
+        month: {
+          $switch: {
+            branches: [
+              { case: { $eq: ['$_id', 1] }, then: 'Jan' },
+              { case: { $eq: ['$_id', 2] }, then: 'Feb' },
+              { case: { $eq: ['$_id', 3] }, then: 'Mar' },
+              { case: { $eq: ['$_id', 4] }, then: 'Apr' },
+              { case: { $eq: ['$_id', 5] }, then: 'May' },
+              { case: { $eq: ['$_id', 6] }, then: 'Jun' },
+              { case: { $eq: ['$_id', 7] }, then: 'Jul' },
+              { case: { $eq: ['$_id', 8] }, then: 'Aug' },
+              { case: { $eq: ['$_id', 9] }, then: 'Sep' },
+              { case: { $eq: ['$_id', 10] }, then: 'Oct' },
+              { case: { $eq: ['$_id', 11] }, then: 'Nov' },
+              { case: { $eq: ['$_id', 12] }, then: 'Dec' },
+            ],
+            default: 'Unknown',
+          },
+        },
+        count: 1,
+      },
+    },
+  ]);
+
+  const monthlyDonationCounts = await Donation.aggregate([
+    {
+      $match: {
+        createdAt: {
+          $gte: new Date(`${year}-01-01`),
+          $lte: new Date(`${year}-12-31`),
+        },
+      },
+    },
+    {
+      $group: {
+        _id: { $month: '$createdAt' },
+        count: { $sum: 1 },
+      },
+    },
+    {
+      $project: {
+        _id: 0,
+        month: {
+          $switch: {
+            branches: [
+              { case: { $eq: ['$_id', 1] }, then: 'Jan' },
+              { case: { $eq: ['$_id', 2] }, then: 'Feb' },
+              { case: { $eq: ['$_id', 3] }, then: 'Mar' },
+              { case: { $eq: ['$_id', 4] }, then: 'Apr' },
+              { case: { $eq: ['$_id', 5] }, then: 'May' },
+              { case: { $eq: ['$_id', 6] }, then: 'Jun' },
+              { case: { $eq: ['$_id', 7] }, then: 'Jul' },
+              { case: { $eq: ['$_id', 8] }, then: 'Aug' },
+              { case: { $eq: ['$_id', 9] }, then: 'Sep' },
+              { case: { $eq: ['$_id', 10] }, then: 'Oct' },
+              { case: { $eq: ['$_id', 11] }, then: 'Nov' },
+              { case: { $eq: ['$_id', 12] }, then: 'Dec' },
+            ],
+            default: 'Unknown',
+          },
+        },
+        count: 1,
+      },
+    },
+  ]);
+
+  res.status(200).json({
+    status: 'success',
+    monthlyPostCounts,
+    monthlyRequestCounts,
+    monthlyItemsCounts,
+    monthlyDonationCounts,
+  });
 });
