@@ -36,8 +36,31 @@ exports.unsentItems = catchAsync(async (req, res, next) => {
     {
       $match: { shipped: false },
     },
+    {
+      $lookup: {
+        from: 'users', // Assuming 'users' is the collection name for the 'user' model
+        localField: 'user',
+        foreignField: '_id',
+        as: 'user',
+      },
+    },
+    {
+      $lookup: {
+        from: 'items', // Assuming 'items' is the collection name for the 'item' model
+        localField: 'item',
+        foreignField: '_id',
+        as: 'item',
+      },
+    },
+    {
+      $unwind: '$user',
+    },
+    {
+      $unwind: '$item',
+    },
   ]);
-  res.status(201).json({
+
+  res.status(200).json({
     status: 'success',
     total: purchase.length,
     data: purchase,
