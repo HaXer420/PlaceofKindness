@@ -262,7 +262,7 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
 
   await user.save({ validateBeforeSave: false });
 
-  const resetURL = `http://localhost:3000/resetforgetpassword/${resetToken}`;
+  const resetURL = `http://localhost:3000/resetforgetpassword?token=${resetToken}`;
 
   const message = `Forgot your password? submit patch request on the given link for the new password ${resetURL} \n If you dont do this please ignore this email`;
 
