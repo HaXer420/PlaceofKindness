@@ -13,8 +13,8 @@ const sendMail = async (options) => {
 service: 'gmail',
     secure: false,
     auth: {
-      user: 'mindcrackerjigar@gmail.com',
-      pass: 'mkuopxpmhsbhoqsy',
+      user: process.env.EMAIL,
+      pass: process.env.EMAIL_PASS,
     },
     tls: {
       rejectUnauthorized: false,
@@ -23,7 +23,7 @@ service: 'gmail',
 
   // mail options
   const mailOptions = {
-    from: 'POC <placeofkindness@pok.io>',
+    from: `POC <${process.env.EMAIL}>`,
     to: options.email,
     subject: options.subject,
     text: options.message,
