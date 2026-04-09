@@ -4,9 +4,9 @@ const dotenv = require('dotenv');
 dotenv.config();
 
 cloudinary.config({
-  cloud_name: 'x-haxer',
-  api_key: '498343716274441',
-  api_secret: 'oOyEF935evWbA07yu6ke1HpUE1s',
+  cloud_name: ${process.env.CLOUDINARY_NAME},
+  api_key: ${process.env.CLOUDINARY_API_KEY},
+  api_secret: ${process.env.CLOUDINARY_API_SECRET},
 });
 
 module.exports = cloudinary;
